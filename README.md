@@ -1,4 +1,4 @@
-# Duo Creativo — tienda en línea
+# Dúo Creativo — tienda en línea
 
 Sitio de pedidos de papelería creativa hecho en React + Vite. Los pedidos llegan
 como mensaje de WhatsApp al **56 2118 8572**. El calendario no deja elegir sábados
@@ -98,6 +98,45 @@ Netlify vuelve a publicar solo, en menos de un minuto. No hay que hacer nada má
 ---
 
 ---
+
+## Cómo se escriben los precios
+
+En `src/data/productos.js` cada producto usa uno de estos cuatro formatos:
+
+| Caso | Cómo se escribe | Se muestra |
+|---|---|---|
+| Precio fijo | `precio: 120` | $120 |
+| Precio que puede subir | `precio: 180, desde: true` | DESDE $180 |
+| Rango | `precio: 100, precioMax: 120` | $100 – $120 |
+| Sin precio | `cotizacion: true` | Cotización |
+
+Cuando un producto se vende de dos formas (con playera o solo el estampado), se
+usa `variantes` y el cliente elige antes de agregarlo:
+
+```js
+{
+  id: 'playera-nombre',
+  nombre: 'Playera con nombre',
+  unidad: 'estampado de 8 × 3 cm',
+  cat: 'textiles',
+  variantes: [
+    { id: 'estampado', nombre: 'Solo el estampado', precio: 39, nota: 'Tú pones la playera' },
+    { id: 'completa',  nombre: 'Con playera incluida', precio: 139 },
+  ],
+}
+```
+
+El total del pedido se calcula como rango cuando hay piezas con precio variable,
+y avisa aparte si algo quedó pendiente de cotizar.
+
+## El logotipo
+
+Los archivos están en `public/`: `monograma.png` (el JX, se usa en el encabezado
+y el pie), `logo-completo.png` (con el texto, se usa en la portada), más el
+favicon. Para cambiarlos, reemplaza los archivos conservando el mismo nombre.
+
+Los colores del sitio salieron del logo y están hasta arriba de `src/styles.css`:
+crema `#F3EADF`, carbón `#292929` y oro `#B08243`.
 
 ## Cómo se calculan los días de entrega
 

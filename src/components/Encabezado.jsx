@@ -3,12 +3,12 @@ import Logo from './Logo'
 export default function Encabezado({ piezas, onIrAlPedido }) {
   return (
     <header>
-      <div className="env barra">
+      <div className="barra env">
         <a className="marca" href="#top">
           <Logo />
           <span>
-            <span className="nombre">Duo Creativo</span>
-            <span className="oficio">papelería creativa</span>
+            <span className="nombre">Dúo Creativo</span>
+            <span className="oficio">DISEÑO · DETALLES · RECUERDOS</span>
           </span>
         </a>
         <nav>
@@ -18,7 +18,7 @@ export default function Encabezado({ piezas, onIrAlPedido }) {
           <a href="#horario">Horario</a>
         </nav>
         <button className="btn-carrito" onClick={onIrAlPedido}>
-          Mi pedido <span className="cuenta">{piezas}</span>
+          MI PEDIDO <span className="cuenta">{piezas}</span>
         </button>
       </div>
     </header>

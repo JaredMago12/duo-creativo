@@ -12,7 +12,7 @@ import Horario from './components/Horario'
 import PieDePagina from './components/PieDePagina'
 import { IconoWhatsApp } from './data/ilustraciones.jsx'
 
-import { PRODUCTOS } from './data/productos'
+import { buscarPorClave, precioDe } from './data/productos'
 import { WHATSAPP, ENVIOS, DIAS_HABILES_PRODUCCION } from './config'
 import {
   diaDeRecepcion, diasDeProduccion, primeraFechaDisponible,
@@ -20,7 +20,7 @@ import {
 } from './lib/fechas'
 
 export default function App() {
-  const [carrito, setCarrito] = useState({})           // { idProducto: cantidad }
+  const [carrito, setCarrito] = useState({})  // { 'producto::variante': cantidad }
   const [filtro, setFiltro] = useState('todo')
   const [fechaElegida, setFechaElegida] = useState(null)
   const [envioId, setEnvioId] = useState(ENVIOS[0].id)
@@ -44,11 +44,17 @@ export default function App() {
   const envio = ENVIOS.find((e) => e.id === envioId)
 
   const piezas = Object.values(carrito).reduce((a, b) => a + b, 0)
-  const subtotal = Object.entries(carrito).reduce(
-    (suma, [id, q]) => suma + PRODUCTOS.find((p) => p.id === id).precio * q,
-    0
+
+  // El total es un rango: algunas piezas tienen precio variable y otras se cotizan
+  const cuenta = Object.entries(carrito).reduce(
+    (acum, [clave, q]) => {
+      const { producto, variante } = buscarPorClave(clave)
+      const p = precioDe(producto, variante)
+      if (p.cotizacion) return { ...acum, hayCotizacion: true }
+      return { ...acum, min: acum.min + p.min * q, max: acum.max + p.max * q }
+    },
+    { min: 0, max: 0, hayCotizacion: false }
   )
-  const total = subtotal + envio.costo
 
   // ----- Carrito -------------------------------------------------------
   const agregar = (id) =>
@@ -105,16 +111,32 @@ export default function App() {
   function textoPedido() {
     const lineas = ['Hola Duo Creativo, quiero hacer un pedido.', '']
 
-    Object.entries(carrito).forEach(([id, q]) => {
-      const p = PRODUCTOS.find((x) => x.id === id)
-      lineas.push(`• ${q} × ${p.nombre} (${p.unidad}) — ${dinero(p.precio * q)}`)
+    Object.entries(carrito).forEach(([clave, q]) => {
+      const { producto, variante } = buscarPorClave(clave)
+      const p = precioDe(producto, variante)
+      const nombre = variante ? `${producto.nombre} — ${variante.nombre}` : producto.nombre
+      const importe = p.cotizacion
+        ? 'por cotizar'
+        : p.min === p.max
+          ? dinero(p.min * q)
+          : `${dinero(p.min * q)} a ${dinero(p.max * q)}`
+      lineas.push(`• ${q} × ${nombre} — ${importe}`)
     })
 
     lineas.push('')
     lineas.push(`Entrega: ${envio.titulo}${envio.costo ? ' — ' + dinero(envio.costo) : ''}`)
     lineas.push(`Día que necesito: ${fechaLarga(fechaElegida)}`)
     lineas.push(`(entra al taller el ${fechaCorta(recepcion)})`)
-    lineas.push(`Total estimado: ${dinero(total)}`)
+    const tMin = cuenta.min + envio.costo
+    const tMax = cuenta.max + envio.costo
+    lineas.push(
+      tMin === tMax
+        ? `Total estimado: ${dinero(tMin)}`
+        : `Total estimado: entre ${dinero(tMin)} y ${dinero(tMax)}`
+    )
+    if (cuenta.hayCotizacion) {
+      lineas.push('(Hay piezas cuyo precio depende del diseño y falta cotizar.)')
+    }
 
     if (datos.notas.trim()) {
       lineas.push('')
@@ -209,9 +231,8 @@ export default function App() {
               <Resumen
                 carrito={carrito}
                 piezas={piezas}
-                subtotal={subtotal}
+                cuenta={cuenta}
                 envio={envio}
-                total={total}
                 fechaElegida={fechaElegida}
                 onCambiarCantidad={cambiarCantidad}
                 onQuitar={quitar}

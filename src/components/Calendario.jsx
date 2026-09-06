@@ -106,7 +106,7 @@ export default function Calendario({ minFecha, recepcion, diasProduccion, fechaE
 
       <div className="cal-pie">
         <span><i className="muestra f" /> Taller cerrado</span>
-        <span><i className="muestra t" /> Días que lo trabajamos</span>
+        <span><i className="muestra produccion" /> Días que lo trabajamos</span>
         <span><i className="muestra d" /> Día elegido</span>
       </div>
     </div>

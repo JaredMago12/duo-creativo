@@ -1,13 +1,16 @@
-import { PRODUCTOS } from '../data/productos'
+import { buscarPorClave, precioDe } from '../data/productos'
 import { dinero, fechaLarga } from '../lib/fechas'
 import { IconoWhatsApp } from '../data/ilustraciones.jsx'
 
 export default function Resumen({
-  carrito, piezas, subtotal, envio, total, fechaElegida,
+  carrito, piezas, cuenta, envio, fechaElegida,
   onCambiarCantidad, onQuitar, onEnviar, onCopiar, acuse,
 }) {
-  const ids = Object.keys(carrito)
-  const hay = ids.length > 0
+  const claves = Object.keys(carrito)
+  const hay = claves.length > 0
+
+  const totalMin = cuenta.min + envio.costo
+  const totalMax = cuenta.max + envio.costo
 
   return (
     <div className="resumen">
@@ -21,28 +24,32 @@ export default function Resumen({
 
         {hay && (
           <ul className="lista">
-            {ids.map((id) => {
-              const p = PRODUCTOS.find((x) => x.id === id)
-              const q = carrito[id]
+            {claves.map((clave) => {
+              const { producto, variante } = buscarPorClave(clave)
+              const q = carrito[clave]
+              const p = precioDe(producto, variante)
               return (
-                <li key={id}>
-                  <span className="tit">{p.nombre}</span>
-                  <span className="monto">{dinero(p.precio * q)}</span>
+                <li key={clave}>
+                  <span className="tit">
+                    {producto.nombre}
+                    {variante && <em>{variante.nombre}</em>}
+                  </span>
+                  <span className="monto">
+                    {p.cotizacion
+                      ? 'Por cotizar'
+                      : p.min === p.max
+                        ? dinero(p.min * q)
+                        : `${dinero(p.min * q)} – ${dinero(p.max * q)}`}
+                  </span>
                   <span className="sub2">
                     <span className="paso">
-                      <button
-                        type="button"
-                        onClick={() => onCambiarCantidad(id, -1)}
-                        aria-label={`Quitar uno de ${p.nombre}`}
-                      >−</button>
+                      <button type="button" onClick={() => onCambiarCantidad(clave, -1)}
+                              aria-label={`Quitar uno de ${producto.nombre}`}>−</button>
                       <span className="n">{q}</span>
-                      <button
-                        type="button"
-                        onClick={() => onCambiarCantidad(id, 1)}
-                        aria-label={`Agregar uno de ${p.nombre}`}
-                      >+</button>
+                      <button type="button" onClick={() => onCambiarCantidad(clave, 1)}
+                              aria-label={`Agregar uno de ${producto.nombre}`}>+</button>
                     </span>
-                    <button type="button" className="quitar" onClick={() => onQuitar(id)}>
+                    <button type="button" className="quitar" onClick={() => onQuitar(clave)}>
                       Quitar
                     </button>
                   </span>
@@ -54,11 +61,10 @@ export default function Resumen({
 
         {!hay && (
           <div className="vacio-msg">
-            <svg width="52" height="52" viewBox="0 0 24 24" fill="none"
-                 stroke="rgba(31,27,51,.35)" strokeWidth="1.6" strokeLinecap="round" aria-hidden="true">
+            <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#B08243"
+                 strokeWidth="1.2" strokeLinecap="round" aria-hidden="true">
               <path d="M4 7h16v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z" />
-              <path d="M8 7V4h8v3" />
-              <path d="M9 12h6" />
+              <path d="M8 7V4h8v3" /><path d="M9 12h6" />
             </svg>
             <p>Elige piezas del catálogo y aparecerán aquí.</p>
           </div>
@@ -67,27 +73,41 @@ export default function Resumen({
         {hay && (
           <>
             <div className={'entrega-fecha' + (fechaElegida ? ' lista-ya' : '')}>
-              Día de entrega
+              DÍA DE ENTREGA
               <strong>{fechaElegida ? fechaLarga(fechaElegida) : 'Sin elegir'}</strong>
             </div>
 
             <div className="cuentas">
-              <div><span>Piezas</span><span>{dinero(subtotal)}</span></div>
+              <div>
+                <span>Piezas</span>
+                <span>
+                  {cuenta.min === cuenta.max
+                    ? dinero(cuenta.min)
+                    : `${dinero(cuenta.min)} – ${dinero(cuenta.max)}`}
+                </span>
+              </div>
               <div>
                 <span>{envio.titulo}</span>
                 <span>{envio.costo ? dinero(envio.costo) : 'Sin costo'}</span>
               </div>
-              <div className="total"><span>Total</span><span>{dinero(total)}</span></div>
+              <div className="total">
+                <span>Total</span>
+                <span>
+                  {totalMin === totalMax ? dinero(totalMin) : `${dinero(totalMin)} – ${dinero(totalMax)}`}
+                </span>
+              </div>
+              {cuenta.hayCotizacion && (
+                <span className="nota-cotiza">
+                  Hay piezas cuyo precio depende del diseño. Te las cotizamos al confirmar
+                  y el total sube en consecuencia.
+                </span>
+              )}
             </div>
 
-            <button
-              className="btn btn-primario"
-              style={{ width: '100%', marginTop: 20 }}
-              onClick={onEnviar}
-              type="button"
-            >
+            <button className="btn btn-primario" style={{ width: '100%', marginTop: 22 }}
+                    onClick={onEnviar} type="button">
               <IconoWhatsApp />
-              Enviar pedido por WhatsApp
+              ENVIAR PEDIDO POR WHATSAPP
             </button>
 
             <button className="enlace-copia" onClick={onCopiar} type="button">

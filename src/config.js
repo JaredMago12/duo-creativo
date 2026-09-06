@@ -24,8 +24,9 @@ export const DIAS_HABILES_PRODUCCION = 2
 export const CIERRE_HORA = 18
 
 // --- Contacto y taller ----------------------------------------------
-export const CORREO = 'hola@duocreativo.mx'
-export const INSTAGRAM = 'https://instagram.com/duocreativo'
+export const CORREO = 'jxduocreativo@gmail.com'
+export const FACEBOOK = 'https://www.facebook.com/duocreativo'
+export const FACEBOOK_NOMBRE = 'Dúo Creativo'
 
 export const DIRECCION = {
   calle: '28 de Noviembre 17',

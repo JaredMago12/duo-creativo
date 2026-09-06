@@ -1,6 +1,6 @@
-import Logo from './Logo'
+import { IconoFacebook, IconoWhatsApp } from '../data/ilustraciones.jsx'
 import {
-  WHATSAPP, WHATSAPP_VISIBLE, CORREO, INSTAGRAM, DIRECCION, MAPA,
+  WHATSAPP, WHATSAPP_VISIBLE, CORREO, FACEBOOK, FACEBOOK_NOMBRE, DIRECCION, MAPA,
 } from '../config'
 
 export default function PieDePagina() {
@@ -10,21 +10,27 @@ export default function PieDePagina() {
         <div className="pie-cols">
           <div>
             <div className="marca-pie">
-              <Logo size={34} borde="#FDF6E7" />
-              <span className="nombre">Duo Creativo</span>
+              <img src="/monograma.png" alt="" />
+              <span><span className="nombre">Dúo Creativo</span><span className="oficio">DISEÑO · DETALLES · RECUERDOS</span></span>
             </div>
             <p>
-              Papelería creativa hecha a mano en Naucalpan, Estado de México. Libretas,
-              invitaciones, stickers y papelería para eventos.
+              Personalizamos tazas, termos, playeras, bolsas y papelería para regalos,
+              eventos y negocios. Taller en Naucalpan, Estado de México.
             </p>
           </div>
 
           <div>
             <h4>Contacto</h4>
             <ul>
-              <li><a href={`https://wa.me/${WHATSAPP}`}>WhatsApp {WHATSAPP_VISIBLE}</a></li>
+              <li><a className="con-icono" href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer">
+                  <IconoWhatsApp width="16" height="16" /><span>{WHATSAPP_VISIBLE}</span>
+                </a></li>
               <li><a href={`mailto:${CORREO}`}>{CORREO}</a></li>
-              <li><a href={INSTAGRAM}>Instagram</a></li>
+              <li>
+                <a className="con-icono" href={FACEBOOK} target="_blank" rel="noopener noreferrer">
+                  <IconoFacebook /><span>{FACEBOOK_NOMBRE}</span>
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -42,7 +48,7 @@ export default function PieDePagina() {
         </div>
 
         <div className="legal">
-          <span>© {new Date().getFullYear()} Duo Creativo. Todos los diseños son originales.</span>
+          <span>© {new Date().getFullYear()} Dúo Creativo. Todos los diseños son originales.</span>
           <span>Aviso de privacidad · Términos de venta</span>
         </div>
       </div>
