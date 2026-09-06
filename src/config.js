@@ -20,7 +20,7 @@ export const CIERRE_HORA = 18
 // --- Contacto y taller ----------------------------------------------
 export const CORREO = 'hola@duocreativo.mx'
 export const INSTAGRAM = 'https://instagram.com/duocreativo'
-export const DIRECCION = ['Calle Zacatecas 000, Roma Norte', 'Cuauhtémoc, CDMX']
+export const DIRECCION = ['28 de Noviembre 17, Plan de Ayala', '53710 Naucalpan de Juárez, Méx']
 
 // --- Horario que se muestra en la tabla ------------------------------
 // dia: 0 = domingo … 6 = sábado
