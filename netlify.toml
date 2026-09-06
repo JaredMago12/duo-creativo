@@ -1,0 +1,12 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Manda cualquier ruta al index para que React no rompa al recargar
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

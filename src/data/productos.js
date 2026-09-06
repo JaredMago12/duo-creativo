@@ -1,0 +1,96 @@
+import {
+  Libreta, Agenda, Stickers, Sobre, Tarjetas, Planner, Etiquetas, Boda,
+} from './ilustraciones.jsx'
+
+// Para agregar un producto, copia un bloque y cambia los datos.
+// El "id" debe ser único. "cat" tiene que existir en CATEGORIAS.
+export const PRODUCTOS = [
+  {
+    id: 'libreta',
+    nombre: 'Libreta A5 de puntos',
+    precio: 260,
+    unidad: 'por pieza',
+    cat: 'libretas',
+    fondo: 'var(--tint-turquesa)',
+    Arte: Libreta,
+    desc: 'Encuadernada a mano, papel de 120 g que no traspasa, abre completamente plana.',
+  },
+  {
+    id: 'agenda',
+    nombre: 'Agenda 2027 personalizada',
+    precio: 420,
+    unidad: 'por pieza',
+    cat: 'libretas',
+    fondo: 'var(--tint-fucsia)',
+    Arte: Agenda,
+    desc: 'Tapa dura con tu nombre grabado, vista semanal y 40 páginas para notas.',
+  },
+  {
+    id: 'stickers',
+    nombre: 'Hoja de stickers troquelados',
+    precio: 95,
+    unidad: '30 piezas',
+    cat: 'stickers',
+    fondo: 'var(--tint-amarillo)',
+    Arte: Stickers,
+    desc: 'Vinil mate resistente al agua, cortados uno por uno con tus ilustraciones.',
+  },
+  {
+    id: 'invitacion',
+    nombre: 'Invitaciones para evento',
+    precio: 650,
+    unidad: 'paquete de 25',
+    cat: 'eventos',
+    fondo: 'var(--tint-fucsia)',
+    Arte: Sobre,
+    desc: 'Papel algodón de 300 g, tinta en relieve y sobre con forro interior.',
+  },
+  {
+    id: 'tarjetas',
+    nombre: 'Tarjetas de presentación',
+    precio: 380,
+    unidad: 'paquete de 100',
+    cat: 'oficina',
+    fondo: 'var(--tint-turquesa)',
+    Arte: Tarjetas,
+    desc: 'Papel de 350 g, hasta dos tintas, esquinas redondeadas si las quieres.',
+  },
+  {
+    id: 'planner',
+    nombre: 'Planner semanal de escritorio',
+    precio: 185,
+    unidad: 'por pieza',
+    cat: 'oficina',
+    fondo: 'var(--tint-amarillo)',
+    Arte: Planner,
+    desc: '52 hojas desprendibles con espacio para pendientes, compras y una nota libre.',
+  },
+  {
+    id: 'etiquetas',
+    nombre: 'Etiquetas para frascos y regalos',
+    precio: 120,
+    unidad: 'paquete de 40',
+    cat: 'stickers',
+    fondo: 'var(--tint-turquesa)',
+    Arte: Etiquetas,
+    desc: 'En kraft o blanco, con tu texto impreso o en blanco para escribir a mano.',
+  },
+  {
+    id: 'boda',
+    nombre: 'Kit de papelería para boda',
+    precio: 1850,
+    unidad: 'kit completo',
+    cat: 'eventos',
+    fondo: 'var(--tint-fucsia)',
+    Arte: Boda,
+    desc: 'Invitación, menú, tarjeta de mesa y nota de agradecimiento, todo coordinado.',
+  },
+]
+
+export const CATEGORIAS = [
+  { id: 'todo', nombre: 'Todo' },
+  { id: 'libretas', nombre: 'Libretas y agendas' },
+  { id: 'eventos', nombre: 'Eventos' },
+  { id: 'stickers', nombre: 'Stickers y etiquetas' },
+  { id: 'oficina', nombre: 'Oficina' },
+]
