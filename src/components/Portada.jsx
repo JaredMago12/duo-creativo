@@ -11,7 +11,7 @@ export default function Portada() {
           <p className="entrada">
             Somos dos: una diseña, la otra imprime y encuaderna. Hacemos libretas,
             invitaciones, stickers y papelería para eventos, pieza por pieza, en nuestro
-            taller de la Ciudad de México.
+            taller de Naucalpan.
           </p>
           <div className="acciones">
             <a className="btn btn-primario" href="#catalogo">Armar mi pedido</a>

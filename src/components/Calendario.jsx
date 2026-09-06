@@ -1,12 +1,11 @@
 import { useState } from 'react'
-import { DIAS_HABILES_PRODUCCION } from '../config'
 import {
-  MESES, esFinDeSemana, fechaLarga, mismaFecha, capitalizar,
+  MESES, esFinDeSemana, fechaLarga, fechaCorta, mismaFecha, capitalizar, enumerar,
 } from '../lib/fechas'
 
 const DOW = ['L', 'M', 'M', 'J', 'V', 'S', 'D']
 
-export default function Calendario({ minFecha, fechaElegida, onElegir }) {
+export default function Calendario({ minFecha, recepcion, diasProduccion, fechaElegida, onElegir }) {
   const [mesVista, setMesVista] = useState(
     () => new Date(minFecha.getFullYear(), minFecha.getMonth(), 1)
   )
@@ -24,13 +23,24 @@ export default function Calendario({ minFecha, fechaElegida, onElegir }) {
 
   const mover = (delta) => setMesVista(new Date(anio, mes + delta, 1))
 
+  const esProduccion = (f) => diasProduccion.some((p) => mismaFecha(p, f))
+  const trabajo = enumerar(diasProduccion.map(fechaCorta))
+
   return (
     <div className="bloque" id="calendario">
       <h3>¿Para qué día lo quieres?</h3>
-      <p className="sub">
-        Necesitamos al menos {DIAS_HABILES_PRODUCCION} días hábiles. El día más próximo
-        disponible es el {fechaLarga(minFecha)}.
-      </p>
+
+      <div className="explica">
+        <p>
+          Tu pedido entra al taller el <b>{fechaCorta(recepcion)}</b>. Lo trabajamos{' '}
+          <b>{trabajo}</b>, así que lo más pronto que puede estar listo es el{' '}
+          <b>{fechaLarga(minFecha)}</b>.
+        </p>
+        <p className="ojo">
+          Si necesitas más tiempo, elige cualquier día hábil posterior. Sábados y
+          domingos no trabajamos.
+        </p>
+      </div>
 
       <div className="cal-top">
         <button
@@ -66,19 +76,25 @@ export default function Calendario({ minFecha, fechaElegida, onElegir }) {
           const temprano = f < minFecha
           const bloqueado = finde || temprano
           const elegido = mismaFecha(f, fechaElegida)
+          const produce = esProduccion(f)
+
+          const clases = ['dia']
+          if (finde) clases.push('finde')
+          if (produce && !elegido) clases.push('produccion')
+          if (elegido) clases.push('elegido')
 
           return (
             <button
               key={f.getDate()}
               type="button"
-              className={'dia' + (finde ? ' finde' : '') + (elegido ? ' elegido' : '')}
+              className={clases.join(' ')}
               disabled={bloqueado}
               onClick={() => onElegir(f)}
               aria-label={
                 finde
                   ? `${fechaLarga(f)}, taller cerrado`
                   : temprano
-                    ? `${fechaLarga(f)}, demasiado pronto`
+                    ? `${fechaLarga(f)}, aún estamos produciendo`
                     : fechaLarga(f)
               }
             >
@@ -90,6 +106,7 @@ export default function Calendario({ minFecha, fechaElegida, onElegir }) {
 
       <div className="cal-pie">
         <span><i className="muestra f" /> Taller cerrado</span>
+        <span><i className="muestra t" /> Días que lo trabajamos</span>
         <span><i className="muestra d" /> Día elegido</span>
       </div>
     </div>

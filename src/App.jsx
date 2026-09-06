@@ -15,7 +15,8 @@ import { IconoWhatsApp } from './data/ilustraciones.jsx'
 import { PRODUCTOS } from './data/productos'
 import { WHATSAPP, ENVIOS, DIAS_HABILES_PRODUCCION } from './config'
 import {
-  soloFecha, sumarDiasHabiles, siguienteHabil, fechaLarga, dinero, DIAS_LARGO,
+  diaDeRecepcion, diasDeProduccion, primeraFechaDisponible,
+  fechaLarga, fechaCorta, dinero, DIAS_LARGO,
 } from './lib/fechas'
 
 export default function App() {
@@ -27,10 +28,17 @@ export default function App() {
   const [errores, setErrores] = useState({})
   const [acuse, setAcuse] = useState(null)
 
-  // El día más próximo que podemos entregar, saltando fines de semana
+  // Tres momentos: 1) cuándo entra el pedido al taller, 2) qué días se
+  // trabaja, 3) el día hábil siguiente al último de trabajo, que es lo más
+  // pronto que puede estar listo.
+  const recepcion = useMemo(() => diaDeRecepcion(new Date()), [])
+  const diasProduccion = useMemo(
+    () => diasDeProduccion(recepcion, DIAS_HABILES_PRODUCCION),
+    [recepcion]
+  )
   const minFecha = useMemo(
-    () => sumarDiasHabiles(soloFecha(new Date()), DIAS_HABILES_PRODUCCION),
-    []
+    () => primeraFechaDisponible(recepcion, DIAS_HABILES_PRODUCCION),
+    [recepcion]
   )
 
   const envio = ENVIOS.find((e) => e.id === envioId)
@@ -105,6 +113,7 @@ export default function App() {
     lineas.push('')
     lineas.push(`Entrega: ${envio.titulo}${envio.costo ? ' — ' + dinero(envio.costo) : ''}`)
     lineas.push(`Día que necesito: ${fechaLarga(fechaElegida)}`)
+    lineas.push(`(entra al taller el ${fechaCorta(recepcion)})`)
     lineas.push(`Total estimado: ${dinero(total)}`)
 
     if (datos.notas.trim()) {
@@ -125,10 +134,9 @@ export default function App() {
     const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(textoPedido())}`
     window.open(url, '_blank', 'noopener')
 
-    const confirma = siguienteHabil(new Date())
     setAcuse({
       titulo: 'Pedido enviado',
-      cuerpo: `Abrimos WhatsApp con tu cotización. Te confirmamos el total final el ${DIAS_LARGO[confirma.getDay()]} a las 9:00.`,
+      cuerpo: `Abrimos WhatsApp con tu cotización. Tu pedido entra al taller el ${DIAS_LARGO[recepcion.getDay()]} y te confirmamos el total final ese mismo día.`,
       alerta: false,
     })
   }
@@ -190,6 +198,8 @@ export default function App() {
                 />
                 <Calendario
                   minFecha={minFecha}
+                  recepcion={recepcion}
+                  diasProduccion={diasProduccion}
                   fechaElegida={fechaElegida}
                   onElegir={(f) => { setFechaElegida(f); setAcuse(null) }}
                 />

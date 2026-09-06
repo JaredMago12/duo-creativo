@@ -1,5 +1,7 @@
 import Logo from './Logo'
-import { WHATSAPP, WHATSAPP_VISIBLE, CORREO, INSTAGRAM, DIRECCION } from '../config'
+import {
+  WHATSAPP, WHATSAPP_VISIBLE, CORREO, INSTAGRAM, DIRECCION, MAPA,
+} from '../config'
 
 export default function PieDePagina() {
   return (
@@ -12,7 +14,7 @@ export default function PieDePagina() {
               <span className="nombre">Duo Creativo</span>
             </div>
             <p>
-              Papelería creativa hecha a mano en la Ciudad de México. Libretas,
+              Papelería creativa hecha a mano en Naucalpan, Estado de México. Libretas,
               invitaciones, stickers y papelería para eventos.
             </p>
           </div>
@@ -29,8 +31,12 @@ export default function PieDePagina() {
           <div>
             <h4>Taller</h4>
             <ul>
-              {DIRECCION.map((l) => <li key={l}>{l}</li>)}
-              <li>Lunes a viernes, con cita</li>
+              <li>{DIRECCION.calle}</li>
+              <li>Col. {DIRECCION.colonia}, C.P. {DIRECCION.cp}</li>
+              <li>{DIRECCION.ciudad}, {DIRECCION.estado}</li>
+              <li style={{ marginTop: 12 }}>
+                <a href={MAPA} target="_blank" rel="noopener noreferrer">Cómo llegar</a>
+              </li>
             </ul>
           </div>
         </div>
