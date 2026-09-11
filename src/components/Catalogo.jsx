@@ -32,8 +32,11 @@ function Tarjeta({ producto, carrito, onAgregar }) {
         <div className="lamina" style={{ background: producto.fondo }}>
           <Arte />
         </div>
-        <h3>{producto.nombre}</h3>
-        <p className="desc">{producto.desc}</p>
+
+        <div className="cuerpo">
+          <h3>{producto.nombre}</h3>
+          <p className="desc">{producto.desc}</p>
+        </div>
 
         {producto.variantes && (
           <div className="variantes" role="radiogroup" aria-label={`Opciones de ${producto.nombre}`}>
