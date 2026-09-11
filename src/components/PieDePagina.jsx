@@ -1,6 +1,6 @@
 import { IconoFacebook, IconoWhatsApp } from '../data/ilustraciones.jsx'
 import {
-  WHATSAPP, WHATSAPP_VISIBLE, CORREO, FACEBOOK, FACEBOOK_NOMBRE, DIRECCION, MAPA,
+  WHATSAPP, WHATSAPP_VISIBLE, CORREO, FACEBOOK, FACEBOOK_NOMBRE, DIRECCION,
 } from '../config'
 
 export default function PieDePagina() {
@@ -37,11 +37,12 @@ export default function PieDePagina() {
           <div>
             <h4>Taller</h4>
             <ul>
-              <li>{DIRECCION.calle}</li>
-              <li>Col. {DIRECCION.colonia}, C.P. {DIRECCION.cp}</li>
-              <li>{DIRECCION.ciudad}, {DIRECCION.estado}</li>
+              <li>{DIRECCION.colonia}</li>
+              <li>{DIRECCION.ciudad}</li>
+              <li>{DIRECCION.estado}</li>
               <li style={{ marginTop: 12 }}>
-                <a href={MAPA} target="_blank" rel="noopener noreferrer">Cómo llegar</a>
+                Lunes a viernes, con cita. Te damos la dirección exacta al
+                confirmar tu pedido.
               </li>
             </ul>
           </div>

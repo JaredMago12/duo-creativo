@@ -28,20 +28,16 @@ export const CORREO = 'jxduocreativo@gmail.com'
 export const FACEBOOK = 'https://www.facebook.com/duocreativo'
 export const FACEBOOK_NOMBRE = 'Dúo Creativo'
 
+// Solo la zona. La calle y el número se dan por WhatsApp al confirmar
+// el pedido, para no publicarlos en internet.
 export const DIRECCION = {
-  calle: '28 de Noviembre 17',
   colonia: 'Plan de Ayala',
   ciudad: 'Naucalpan de Juárez',
   estado: 'Estado de México',
-  cp: '53710',
 }
 
-// Texto completo, para el mensaje de WhatsApp y el pie de página
 export const DIRECCION_COMPLETA =
-  `${DIRECCION.calle}, ${DIRECCION.colonia}, ${DIRECCION.cp} ${DIRECCION.ciudad}, Méx.`
-
-// Enlace que abre la dirección en Google Maps
-export const MAPA = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(DIRECCION_COMPLETA)}`
+  `${DIRECCION.colonia}, ${DIRECCION.ciudad}, ${DIRECCION.estado}`
 
 // --- Horario que se muestra en la tabla ------------------------------
 // dia: 0 = domingo … 6 = sábado
@@ -60,7 +56,7 @@ export const ENVIOS = [
   {
     id: 'taller',
     titulo: 'Recoger en el taller',
-    detalle: 'Plan de Ayala, Naucalpan, de 10:00 a 18:00',
+    detalle: 'Plan de Ayala, Naucalpan · te pasamos la dirección al confirmar',
     costo: 0,
   },
   {
